@@ -13,6 +13,8 @@ import com.codetest.main.extensions.showToast
 import com.codetest.main.models.LocationModel
 import com.codetest.main.models.WeatherStatus
 import com.codetest.main.repositories.LocationRepository
+import com.codetest.main.util.EditTextListener
+import com.codetest.main.viewmodels.LocationViewModel
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDisposable
 import kotlinx.android.synthetic.main.activity_add_location.*
@@ -23,13 +25,27 @@ class AddLocationActivity : BaseLceActivity(contentView = R.layout.activity_add_
             Intent(context, AddLocationActivity::class.java)
     }
 
-    private val locationRepo = LocationRepository()
+    private val viewModel = LocationViewModel(LocationRepository())
     private lateinit var selectedWeatherStatus: WeatherStatus
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupValidators()
         setupStatusSpinner()
         setupSubmitButton()
+    }
+
+    private fun setupValidators() {
+        et_name.addTextChangedListener(object : EditTextListener() {
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                validateInputs()
+            }
+        })
+        et_temperature.addTextChangedListener(object : EditTextListener() {
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                validateInputs()
+            }
+        })
     }
 
     private fun setupStatusSpinner() {
@@ -41,6 +57,7 @@ class AddLocationActivity : BaseLceActivity(contentView = R.layout.activity_add_
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                     selectedWeatherStatus = WeatherStatus.values()[position]
+                    validateInputs()
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
@@ -50,23 +67,28 @@ class AddLocationActivity : BaseLceActivity(contentView = R.layout.activity_add_
         }
     }
 
+    private fun validateInputs() {
+        btn_confirm_location.isEnabled =
+            et_name.text?.isNotEmpty() == true
+                    && et_temperature.text?.isNotEmpty() == true
+                    && selectedWeatherStatus != WeatherStatus.NOT_SET
+    }
+
     private fun setupSubmitButton() {
         btn_confirm_location.setOnClickListener {
-            // TODO: Add validations
-            val location =
-                LocationRequest(
-                    name = et_name.text.toString(),
-                    temperature = et_temperature.text.toString(),
-                    status = selectedWeatherStatus.name
+            viewModel
+                .postLocation(
+                    LocationRequest(
+                        name = et_name.text.toString(),
+                        temperature = et_temperature.text.toString(),
+                        status = selectedWeatherStatus.name
+                    )
                 )
-
-            locationRepo
-                .postLocation(location)
                 .doOnSubscribe { showLoading() }
                 .autoDisposable(scope(Lifecycle.Event.ON_DESTROY))
                 .subscribe(
                     { newLocation ->
-                        startExitAnimation(newLocation)
+                        exitActivity(newLocation)
                     },
                     { throwable ->
                         showContent()
@@ -76,8 +98,7 @@ class AddLocationActivity : BaseLceActivity(contentView = R.layout.activity_add_
         }
     }
 
-    private fun startExitAnimation(location: LocationModel) {
-        // TODO: Add animation
+    private fun exitActivity(location: LocationModel) {
         this.showToast("${location.name} added!")
         finish()
     }

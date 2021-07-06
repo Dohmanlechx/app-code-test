@@ -11,6 +11,7 @@ import com.codetest.main.extensions.showToast
 import com.codetest.main.models.LocationModel
 import com.codetest.main.repositories.LocationRepository
 import com.codetest.main.ui.LocationViewHolder
+import com.codetest.main.viewmodels.LocationViewModel
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDisposable
 import kotlinx.android.synthetic.main.activity_main.*
@@ -21,7 +22,7 @@ class WeatherForecastActivity : BaseLceActivity(contentView = R.layout.activity_
     private var adapter = LocationAdapter()
     private var locations: List<LocationModel> = arrayListOf()
 
-    private val locationRepo = LocationRepository()
+    private val viewModel = LocationViewModel(LocationRepository())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +56,7 @@ class WeatherForecastActivity : BaseLceActivity(contentView = R.layout.activity_
     }
 
     private fun fetchLocations() {
-        locationRepo
+        viewModel
             .getLocations()
             .doOnSubscribe { showLoading() }
             .autoDisposable(scope(Lifecycle.Event.ON_DESTROY))
@@ -78,7 +79,7 @@ class WeatherForecastActivity : BaseLceActivity(contentView = R.layout.activity_
             .setMessage(resources.getString(R.string.delete_location_body, location.name))
             .setNegativeButton(resources.getString(R.string.cancel)) { _, _ -> }
             .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
-                locationRepo
+                viewModel
                     .deleteLocation(location.id)
                     .doOnSubscribe { showLoading() }
                     .autoDisposable(scope(Lifecycle.Event.ON_DESTROY))

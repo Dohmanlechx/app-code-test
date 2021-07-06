@@ -11,6 +11,3 @@ fun View.show() {
 fun View.hide() {
     visibility = View.GONE
 }
-
-fun Context.showToast(msg: String) =
-    Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
