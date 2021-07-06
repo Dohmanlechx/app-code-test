@@ -3,7 +3,6 @@ package com.codetest.main.activities
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.codetest.R
@@ -13,7 +12,7 @@ import com.codetest.main.ui.LocationViewHolder
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class WeatherForecastActivity : AppCompatActivity() {
+class WeatherForecastActivity : BaseActivity(contentView = R.layout.activity_main) {
 
     private var adapter = ListAdapter()
     private var locations: List<LocationModel> = arrayListOf()
@@ -22,21 +21,24 @@ class WeatherForecastActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
         setupAdapter()
         setupAddLocationButton()
     }
 
     override fun onResume() {
         super.onResume()
-        locationRepo.fetchLocations().subscribe({
-            locations = it
-            adapter.notifyDataSetChanged()
-        }, {
-            it
-            showError()
-        })
+
+        locationRepo
+            .fetchLocations()
+            .doOnSubscribe { showLoading() }
+            .subscribe(
+                {
+                    locations = it
+                    adapter.notifyDataSetChanged()
+                    showContent()
+                },
+                ::showError
+            )
     }
 
     private fun setupAdapter() {
@@ -57,15 +59,6 @@ class WeatherForecastActivity : AppCompatActivity() {
 //        }, {
 //            Toast.makeText(CodeTestApplication.context, "Failed to add location", Toast.LENGTH_SHORT).show()
 //        })
-    }
-
-    private fun showError() {
-        AlertDialog.Builder(this)
-            .setTitle(resources.getString(R.string.error_title))
-            .setMessage(resources.getString(R.string.error_title))
-            .setPositiveButton(resources.getString(R.string.ok), { _, _ -> })
-            .create()
-            .show()
     }
 
     private inner class ListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

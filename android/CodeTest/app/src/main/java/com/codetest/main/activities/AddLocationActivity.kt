@@ -7,14 +7,14 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.codetest.R
 import com.codetest.main.api.models.LocationRequest
+import com.codetest.main.models.LocationModel
 import com.codetest.main.models.WeatherStatus
 import com.codetest.main.repositories.LocationRepository
 import kotlinx.android.synthetic.main.activity_add_location.*
 
-class AddLocationActivity : AppCompatActivity() {
+class AddLocationActivity : BaseActivity(contentView = R.layout.activity_add_location) {
     companion object {
         fun intent(context: Context): Intent =
             Intent(context, AddLocationActivity::class.java)
@@ -25,8 +25,6 @@ class AddLocationActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_location)
-
         setupStatusSpinner()
         setupSubmitButton()
     }
@@ -59,14 +57,17 @@ class AddLocationActivity : AppCompatActivity() {
 
             locationRepo
                 .postLocation(location)
+                .doOnSubscribe { showLoading() }
                 .subscribe(
-                    {
-                        finish()
-                    },
-                    { throwable ->
-                        Toast.makeText(this, "Something went wrong: ${throwable.message}", Toast.LENGTH_SHORT).show()
-                    }
+                    ::startExitAnimation,
+                    ::showError
                 )
         }
+    }
+
+    private fun startExitAnimation(location: LocationModel) {
+        // TODO: Add animation
+        Toast.makeText(this, "${location.name} added!", Toast.LENGTH_LONG).show()
+        finish()
     }
 }
