@@ -1,8 +1,6 @@
 package com.codetest.main.api
 
-import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
@@ -10,9 +8,6 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Url
 
 class LocationApiService {
     private val api: LocationApi
@@ -26,9 +21,9 @@ class LocationApiService {
     init {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://app-code-test.kry.pet/")
-                .client(OkHttpClient().newBuilder().build())
+            .client(OkHttpClient().newBuilder().build())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         api = retrofit.create(LocationApi::class.java)
