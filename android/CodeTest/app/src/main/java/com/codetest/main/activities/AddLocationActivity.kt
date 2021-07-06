@@ -14,7 +14,7 @@ import com.codetest.main.models.WeatherStatus
 import com.codetest.main.repositories.LocationRepository
 import kotlinx.android.synthetic.main.activity_add_location.*
 
-class AddLocationActivity : BaseActivity(contentView = R.layout.activity_add_location) {
+class AddLocationActivity : BaseLceActivity(contentView = R.layout.activity_add_location) {
     companion object {
         fun intent(context: Context): Intent =
             Intent(context, AddLocationActivity::class.java)
@@ -59,8 +59,13 @@ class AddLocationActivity : BaseActivity(contentView = R.layout.activity_add_loc
                 .postLocation(location)
                 .doOnSubscribe { showLoading() }
                 .subscribe(
-                    ::startExitAnimation,
-                    ::showError
+                    { newLocation ->
+                        startExitAnimation(newLocation)
+                    },
+                    { throwable ->
+                        showContent()
+                        showErrorDialog(throwable)
+                    }
                 )
         }
     }

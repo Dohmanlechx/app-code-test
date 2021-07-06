@@ -8,4 +8,5 @@
     <string name="location_name">Name</string>
     <string name="location_temperature">Temperature</string>
     <string name="submit">Submit</string>
+    <string name="try_again">Try again</string>
 </resources>

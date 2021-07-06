@@ -12,7 +12,7 @@ import com.codetest.main.ui.LocationViewHolder
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class WeatherForecastActivity : BaseActivity(contentView = R.layout.activity_main) {
+class WeatherForecastActivity : BaseLceActivity(contentView = R.layout.activity_main) {
 
     private var adapter = LocationAdapter()
     private var locations: List<LocationModel> = arrayListOf()
@@ -23,6 +23,7 @@ class WeatherForecastActivity : BaseActivity(contentView = R.layout.activity_mai
         super.onCreate(savedInstanceState)
         setupAdapter()
         setupAddLocationButton()
+        setupTryAgainButton()
     }
 
     override fun onResume() {
@@ -43,17 +44,26 @@ class WeatherForecastActivity : BaseActivity(contentView = R.layout.activity_mai
         }
     }
 
+    private fun setupTryAgainButton() {
+        setTryAgainOnClickListener {
+            fetchLocations()
+        }
+    }
+
     private fun fetchLocations() {
         locationRepo
             .getLocations()
             .doOnSubscribe { showLoading() }
             .subscribe(
-                {
-                    locations = it
+                { newLocations ->
+                    locations = newLocations
                     adapter.notifyDataSetChanged()
                     showContent()
                 },
-                ::showError
+                { throwable ->
+                    showError()
+                    showErrorDialog(throwable)
+                }
             )
     }
 
@@ -63,10 +73,13 @@ class WeatherForecastActivity : BaseActivity(contentView = R.layout.activity_mai
             .doOnSubscribe { showLoading() }
             .subscribe(
                 {
-                    Toast.makeText(this, "Location #$id deleted!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Location deleted!", Toast.LENGTH_LONG).show()
                     fetchLocations()
                 },
-                ::showError
+                { throwable ->
+                    showContent()
+                    showErrorDialog(throwable)
+                }
             )
     }
 

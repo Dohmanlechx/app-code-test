@@ -10,7 +10,7 @@ import com.codetest.main.extensions.hide
 import com.codetest.main.extensions.show
 import kotlinx.android.synthetic.main.activity_base.*
 
-abstract class BaseActivity(
+abstract class BaseLceActivity(
     @LayoutRes private val contentView: Int
 ) : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,18 +23,32 @@ abstract class BaseActivity(
         LayoutInflater.from(this).inflate(contentView, layout_content, true)
     }
 
+    protected fun setTryAgainOnClickListener(onTryAgain: () -> Unit) {
+        btn_try_again.apply {
+            show()
+            setOnClickListener { onTryAgain() }
+        }
+    }
+
     protected fun showLoading() {
         layout_loading.show()
         layout_content.hide()
+        layout_error.hide()
     }
 
     protected fun showContent() {
-        layout_content.show()
         layout_loading.hide()
+        layout_content.show()
+        layout_error.hide()
     }
 
-    protected fun showError(throwable: Throwable) {
-        showContent()
+    protected fun showError() {
+        layout_loading.hide()
+        layout_content.hide()
+        layout_error.show()
+    }
+
+    protected fun showErrorDialog(throwable: Throwable) {
         AlertDialog.Builder(this)
             .setTitle(resources.getString(R.string.error_title))
             .setMessage(resources.getString(R.string.error_message, throwable.message))

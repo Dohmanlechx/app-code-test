@@ -19,6 +19,7 @@ enum class WeatherStatus(val value: Int) {
     companion object {
         val formattedNames: List<String>
             get() = values()
+                .filterNot { it == UNKNOWN }
                 .map { it.name }
                 .map { it.replace("_", " ") }
                 .map { it[0].toUpperCase() + it.substring(1).toLowerCase(Locale.ROOT) }
