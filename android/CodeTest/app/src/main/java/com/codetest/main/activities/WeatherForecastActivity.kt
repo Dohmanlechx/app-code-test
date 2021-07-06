@@ -1,13 +1,11 @@
-package com.codetest.main
+package com.codetest.main.activities
 
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.codetest.CodeTestApplication
 import com.codetest.R
 import com.codetest.main.models.LocationModel
 import com.codetest.main.repositories.LocationRepository
@@ -26,14 +24,8 @@ class WeatherForecastActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        adapter = ListAdapter()
-        recyclerView.layoutManager = LinearLayoutManager(
-            this,
-            LinearLayoutManager.VERTICAL,
-            false
-        )
-        recyclerView.adapter = adapter
-        adapter.notifyDataSetChanged()
+        setupAdapter()
+        setupAddLocationButton()
     }
 
     override fun onResume() {
@@ -45,6 +37,19 @@ class WeatherForecastActivity : AppCompatActivity() {
             it
             showError()
         })
+    }
+
+    private fun setupAdapter() {
+        adapter = ListAdapter()
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        recyclerView.adapter = adapter
+        adapter.notifyDataSetChanged()
+    }
+
+    private fun setupAddLocationButton() {
+        btn_add_location.setOnClickListener {
+
+        }
     }
 
     private fun postLocation() {
