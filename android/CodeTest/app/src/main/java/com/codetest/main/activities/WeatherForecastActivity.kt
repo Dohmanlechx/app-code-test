@@ -1,6 +1,5 @@
 package com.codetest.main.activities
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,7 +13,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class WeatherForecastActivity : BaseActivity(contentView = R.layout.activity_main) {
 
-    private var adapter = ListAdapter()
+    private var adapter = LocationAdapter()
     private var locations: List<LocationModel> = arrayListOf()
 
     private val locationRepo = LocationRepository()
@@ -42,7 +41,7 @@ class WeatherForecastActivity : BaseActivity(contentView = R.layout.activity_mai
     }
 
     private fun setupAdapter() {
-        adapter = ListAdapter()
+        adapter = LocationAdapter()
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
         adapter.notifyDataSetChanged()
@@ -54,22 +53,9 @@ class WeatherForecastActivity : BaseActivity(contentView = R.layout.activity_mai
         }
     }
 
-    private fun postLocation() {
-//        locationRepo.postLocation().subscribe({
-//        }, {
-//            Toast.makeText(CodeTestApplication.context, "Failed to add location", Toast.LENGTH_SHORT).show()
-//        })
-    }
-
-    private inner class ListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-        override fun getItemCount(): Int {
-            return locations.size
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            return LocationViewHolder.create(parent)
-        }
-
+    private inner class LocationAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+        override fun getItemCount() = locations.size
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = LocationViewHolder.create(parent)
         override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
             (viewHolder as? LocationViewHolder)?.setup(locations[position])
         }

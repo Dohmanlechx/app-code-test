@@ -29,12 +29,18 @@ class LocationViewHolder private constructor(itemView: View) : RecyclerView.View
 
     private fun getColor(status: WeatherStatus): Int {
         return when (status) {
-            WeatherStatus.SUNNY, WeatherStatus.MOSTLY_SUNNY, WeatherStatus.PARTLY_SUNNY, WeatherStatus.PARTLY_SUNNY_RAIN, WeatherStatus.BARELY_SUNNY
-            -> itemView.resources.getColor(R.color.blue)
-            WeatherStatus.THUNDER_CLOUD_AND_RAIN, WeatherStatus.TORNADO, WeatherStatus.LIGHTENING -> itemView.resources.getColor(R.color.red)
-            WeatherStatus.CLOUDY, WeatherStatus.SNOW_CLOUD, WeatherStatus.RAINY -> itemView.resources.getColor(R.color.grey)
+            WeatherStatus.SUNNY,
+            WeatherStatus.MOSTLY_SUNNY,
+            WeatherStatus.PARTLY_SUNNY,
+            WeatherStatus.PARTLY_SUNNY_RAIN,
+            WeatherStatus.BARELY_SUNNY -> itemView.resources.getColor(R.color.blue)
+            WeatherStatus.THUNDER_CLOUD_AND_RAIN,
+            WeatherStatus.TORNADO,
+            WeatherStatus.LIGHTENING -> itemView.resources.getColor(R.color.red)
+            WeatherStatus.CLOUDY,
+            WeatherStatus.SNOW_CLOUD,
+            WeatherStatus.RAINY -> itemView.resources.getColor(R.color.grey)
             WeatherStatus.UNKNOWN -> itemView.resources.getColor(R.color.white)
-
         }
     }
 }
