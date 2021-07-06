@@ -2,9 +2,9 @@ package com.codetest.main.usecases
 
 import com.codetest.main.KeyUtil
 import com.codetest.main.api.LocationApiService
-import com.codetest.main.models.Location
+import com.codetest.main.api.models.Location
 import com.codetest.main.models.LocationModel
-import com.codetest.main.models.LocationRequest
+import com.codetest.main.api.models.LocationRequest
 import com.codetest.main.models.toStatus
 import io.reactivex.Single
 

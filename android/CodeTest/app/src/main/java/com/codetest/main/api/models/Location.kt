@@ -1,4 +1,6 @@
-package com.codetest.main.models
+package com.codetest.main.api.models
+
+import com.codetest.main.models.Status
 
 data class Location(
     val id: String? = null,

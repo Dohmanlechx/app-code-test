@@ -1,4 +1,4 @@
-package com.codetest.main.models
+package com.codetest.main.api.models
 
 data class LocationRequest(
     val name: String? = null,

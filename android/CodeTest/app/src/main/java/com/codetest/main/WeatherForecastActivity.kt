@@ -10,10 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.codetest.CodeTestApplication
 import com.codetest.R
 import com.codetest.main.models.LocationModel
-import com.codetest.main.models.LocationRequest
+import com.codetest.main.repositories.LocationRepository
 import com.codetest.main.ui.LocationViewHolder
-import com.codetest.main.usecases.GetLocationsUseCase
-import com.codetest.main.usecases.PostLocationUseCase
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -21,6 +19,8 @@ class WeatherForecastActivity : AppCompatActivity() {
 
     private var adapter = ListAdapter()
     private var locations: List<LocationModel> = arrayListOf()
+
+    private val locationRepo = LocationRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,32 +38,20 @@ class WeatherForecastActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        fetchLocations()
+        locationRepo.fetchLocations().subscribe({
+            locations = it
+            adapter.notifyDataSetChanged()
+        }, {
+            it
+            showError()
+        })
     }
 
     private fun postLocation() {
-        PostLocationUseCase(
-            location = LocationRequest("Budapest", "81", "RAINY")
-        )
-            .single()
-            .subscribe({
-                fetchLocations()
-            }, {
-                Toast.makeText(CodeTestApplication.context, "Failed to add location", Toast.LENGTH_SHORT).show()
-                fetchLocations()
-            })
-    }
-
-    private fun fetchLocations() {
-        GetLocationsUseCase()
-            .single()
-            .subscribe({
-                locations = it
-                adapter.notifyDataSetChanged()
-            }, {
-                it
-                showError()
-            })
+//        locationRepo.postLocation().subscribe({
+//        }, {
+//            Toast.makeText(CodeTestApplication.context, "Failed to add location", Toast.LENGTH_SHORT).show()
+//        })
     }
 
     private fun showError() {

@@ -1,8 +1,8 @@
 package com.codetest.main.api
 
-import com.codetest.main.models.GetLocationsResponse
-import com.codetest.main.models.Location
-import com.codetest.main.models.LocationRequest
+import com.codetest.main.api.models.GetLocationsResponse
+import com.codetest.main.api.models.Location
+import com.codetest.main.api.models.LocationRequest
 import io.reactivex.Single
 import retrofit2.http.Body
 import retrofit2.http.GET
