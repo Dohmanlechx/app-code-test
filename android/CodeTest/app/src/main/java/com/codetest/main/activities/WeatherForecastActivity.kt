@@ -1,5 +1,6 @@
 package com.codetest.main.activities
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.Toast
@@ -67,20 +68,28 @@ class WeatherForecastActivity : BaseLceActivity(contentView = R.layout.activity_
             )
     }
 
-    private fun deleteLocationAndUpdate(id: String) {
-        locationRepo
-            .deleteLocation(id)
-            .doOnSubscribe { showLoading() }
-            .subscribe(
-                {
-                    Toast.makeText(this, "Location deleted!", Toast.LENGTH_LONG).show()
-                    fetchLocations()
-                },
-                { throwable ->
-                    showContent()
-                    showErrorDialog(throwable)
-                }
-            )
+    private fun deleteLocationAndUpdate(location: LocationModel) {
+        AlertDialog.Builder(this)
+            .setTitle(resources.getString(R.string.delete_location_title))
+            .setMessage(resources.getString(R.string.delete_location_body, location.name))
+            .setNegativeButton(resources.getString(R.string.cancel)) { _, _ -> }
+            .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
+                locationRepo
+                    .deleteLocation(location.id)
+                    .doOnSubscribe { showLoading() }
+                    .subscribe(
+                        {
+                            Toast.makeText(this, "${location.name} deleted!", Toast.LENGTH_LONG).show()
+                            fetchLocations()
+                        },
+                        { throwable ->
+                            showErrorDialog(throwable)
+                            fetchLocations()
+                        }
+                    )
+            }
+            .create()
+            .show()
     }
 
     private inner class LocationAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -89,7 +98,7 @@ class WeatherForecastActivity : BaseLceActivity(contentView = R.layout.activity_
         override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
             (viewHolder as? LocationViewHolder)?.setup(
                 location = locations[position],
-                onLongPress = { id -> deleteLocationAndUpdate(id) }
+                onLongPress = { location -> deleteLocationAndUpdate(location) }
             )
         }
     }

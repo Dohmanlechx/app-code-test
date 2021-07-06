@@ -3,7 +3,7 @@ package com.codetest.main.models
 import java.util.*
 
 enum class WeatherStatus(val value: Int) {
-    UNKNOWN(-1),
+    NOT_SET(-1),
     CLOUDY(0x2601),
     SUNNY(0x2600),
     MOSTLY_SUNNY(0x1F324),
@@ -19,7 +19,6 @@ enum class WeatherStatus(val value: Int) {
     companion object {
         val formattedNames: List<String>
             get() = values()
-                .filterNot { it == UNKNOWN }
                 .map { it.name }
                 .map { it.replace("_", " ") }
                 .map { it[0].toUpperCase() + it.substring(1).toLowerCase(Locale.ROOT) }
@@ -27,4 +26,4 @@ enum class WeatherStatus(val value: Int) {
 }
 
 fun String?.toStatus(): WeatherStatus =
-    WeatherStatus.values().firstOrNull { it.name == this } ?: WeatherStatus.UNKNOWN
+    WeatherStatus.values().firstOrNull { it.name == this } ?: WeatherStatus.NOT_SET

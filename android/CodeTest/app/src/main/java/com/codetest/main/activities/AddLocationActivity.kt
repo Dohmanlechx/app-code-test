@@ -21,7 +21,7 @@ class AddLocationActivity : BaseLceActivity(contentView = R.layout.activity_add_
     }
 
     private val locationRepo = LocationRepository()
-    private var selectedWeatherStatus = WeatherStatus.UNKNOWN
+    private var selectedWeatherStatus = WeatherStatus.NOT_SET
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

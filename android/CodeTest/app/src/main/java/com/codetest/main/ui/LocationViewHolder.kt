@@ -21,13 +21,13 @@ class LocationViewHolder private constructor(itemView: View) : RecyclerView.View
         }
     }
 
-    fun setup(location: LocationModel, onLongPress: (String) -> Unit) {
+    fun setup(location: LocationModel, onLongPress: (LocationModel) -> Unit) {
         itemView.card.setCardBackgroundColor(getColor(location.status))
         itemView.name.text = location.name
         val weather = location.temperature + "°C " + String(Character.toChars(location.status.value))
         itemView.weatherInfo.text = weather
         itemView.card.setOnLongClickListener {
-            onLongPress(location.id)
+            onLongPress(location)
             true
         }
     }
@@ -45,7 +45,7 @@ class LocationViewHolder private constructor(itemView: View) : RecyclerView.View
             WeatherStatus.CLOUDY,
             WeatherStatus.SNOW_CLOUD,
             WeatherStatus.RAINY -> itemView.resources.getColor(R.color.grey)
-            WeatherStatus.UNKNOWN -> itemView.resources.getColor(R.color.white)
+            WeatherStatus.NOT_SET -> itemView.resources.getColor(R.color.white)
         }
     }
 }
