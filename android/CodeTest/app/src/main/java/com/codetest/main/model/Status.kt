@@ -12,11 +12,7 @@ enum class Status(val value: Int) {
     LIGHTENING(0x1F329),
     SNOW_CLOUD(0x1F328),
     RAINY(0x1F327),
-    UNKNOWN(-1);
-
-    companion object {
-        fun from(string: String): Status = values().first { it.name == string }
-    }
+    UNKNOWN(-1)
 }
 
 fun String?.toStatus(): Status =

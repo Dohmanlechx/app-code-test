@@ -12,7 +12,7 @@ class KeyUtil {
     }
 
     private fun preferences(): SharedPreferences =
-        PreferenceManager.getDefaultSharedPreferences(CodeTestApplication.appContext())
+        PreferenceManager.getDefaultSharedPreferences(CodeTestApplication.context)
 
     fun getKey(): String {
         preferences().getString(KEY, null)?.let {

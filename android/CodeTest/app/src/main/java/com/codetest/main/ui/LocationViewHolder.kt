@@ -22,7 +22,7 @@ class LocationViewHolder private constructor(itemView: View) : RecyclerView.View
     }
 
     fun setup(location: LocationModel) {
-        itemView.card.setCardBackgroundColor(getColor(location.status!!))
+        itemView.card.setCardBackgroundColor(getColor(location.status))
         itemView.name.text = location.name
         val weather = location.temperature + "°C " + String(Character.toChars(location.status.value))
         itemView.weatherInfo.text = weather
