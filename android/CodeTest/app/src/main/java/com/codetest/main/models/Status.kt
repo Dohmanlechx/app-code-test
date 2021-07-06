@@ -1,4 +1,4 @@
-package com.codetest.main.model
+package com.codetest.main.models
 
 enum class Status(val value: Int) {
     CLOUDY(0x2601),

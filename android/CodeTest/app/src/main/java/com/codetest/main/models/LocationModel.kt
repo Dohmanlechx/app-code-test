@@ -1,4 +1,4 @@
-package com.codetest.main.model
+package com.codetest.main.models
 
 data class LocationModel(
     val id: String,

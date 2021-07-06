@@ -2,14 +2,18 @@ package com.codetest.main
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.view.ViewGroup
+import com.codetest.CodeTestApplication
 import com.codetest.R
-import com.codetest.main.model.LocationModel
+import com.codetest.main.models.LocationModel
+import com.codetest.main.models.LocationRequest
 import com.codetest.main.ui.LocationViewHolder
 import com.codetest.main.usecases.GetLocationsUseCase
+import com.codetest.main.usecases.PostLocationUseCase
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -35,6 +39,19 @@ class WeatherForecastActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         fetchLocations()
+    }
+
+    private fun postLocation() {
+        PostLocationUseCase(
+            location = LocationRequest("Budapest", "81", "RAINY")
+        )
+            .single()
+            .subscribe({
+                fetchLocations()
+            }, {
+                Toast.makeText(CodeTestApplication.context, "Failed to add location", Toast.LENGTH_SHORT).show()
+                fetchLocations()
+            })
     }
 
     private fun fetchLocations() {

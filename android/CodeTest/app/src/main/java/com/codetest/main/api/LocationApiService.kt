@@ -1,17 +1,15 @@
 package com.codetest.main.api
 
-import com.codetest.main.model.GetLocationsResponse
-import com.codetest.main.model.Location
-import com.google.gson.JsonObject
+import com.codetest.main.models.GetLocationsResponse
+import com.codetest.main.models.Location
+import com.codetest.main.models.LocationRequest
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
+// TODO: Koinize
 class LocationApiService {
     private val api: LocationApi
 
@@ -36,17 +34,7 @@ class LocationApiService {
         return api.getLocations(apiKey)
     }
 
-    fun get(apiKey: String, url: String, success: (JsonObject) -> Unit, error: (String?) -> Unit) {
-        api.get(apiKey, url)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onNext = {
-                    success(it)
-                },
-                onError = {
-                    error(it.message)
-                }
-            )
+    fun postLocation(apiKey: String, location: LocationRequest): Single<Location> {
+        return api.postLocation(apiKey, location)
     }
 }

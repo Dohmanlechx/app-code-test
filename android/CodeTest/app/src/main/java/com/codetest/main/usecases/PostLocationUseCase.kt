@@ -4,15 +4,18 @@ import com.codetest.main.KeyUtil
 import com.codetest.main.api.LocationApiService
 import com.codetest.main.models.Location
 import com.codetest.main.models.LocationModel
+import com.codetest.main.models.LocationRequest
 import com.codetest.main.models.toStatus
 import io.reactivex.Single
 
-class GetLocationsUseCase : SingleUseCase<List<LocationModel>>() {
-    override fun createSingle(): Single<List<LocationModel>> =
+class PostLocationUseCase(
+    private val location: LocationRequest
+) : SingleUseCase<LocationModel>() {
+    override fun createSingle(): Single<LocationModel> =
         LocationApiService
             .getApi()
-            .getLocations(KeyUtil().getKey())
-            .map { response -> response.locations.map { it.toModel() } }
+            .postLocation(KeyUtil().getKey(), location)
+            .map { it.toModel() }
 
     private fun Location.toModel(): LocationModel =
         LocationModel(
