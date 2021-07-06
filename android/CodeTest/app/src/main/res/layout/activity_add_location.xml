@@ -1,7 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue">
+    android:layout_marginHorizontal="16dp"
+    android:gravity="center"
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/et_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:hint="@string/location_name"
+        android:imeOptions="actionNext"
+        android:inputType="text"
+        android:maxLines="1" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/et_temperature"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:hint="@string/location_temperature"
+        android:imeOptions="actionDone"
+        android:inputType="numberSigned"
+        android:maxLength="4"
+        android:maxLines="1" />
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/spinner_weather_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_confirm_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/submit" />
+
+</LinearLayout>
