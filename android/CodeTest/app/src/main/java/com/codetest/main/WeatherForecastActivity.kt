@@ -2,9 +2,9 @@ package com.codetest.main
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import com.codetest.R
 import com.codetest.main.model.LocationModel
@@ -23,7 +23,11 @@ class WeatherForecastActivity : AppCompatActivity() {
         setContentView(com.codetest.R.layout.activity_main)
 
         adapter = ListAdapter()
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager = LinearLayoutManager(
+            this,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
         recyclerView.adapter = adapter
         adapter.notifyDataSetChanged()
     }
