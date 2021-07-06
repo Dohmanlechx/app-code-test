@@ -1,10 +1,13 @@
 package com.codetest.main.activities
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import com.codetest.CodeTestApplication.Companion.context
 import com.codetest.R
 import com.codetest.main.extensions.hide
 import com.codetest.main.extensions.show
@@ -23,6 +26,11 @@ abstract class BaseLceActivity(
         LayoutInflater.from(this).inflate(contentView, layout_content, true)
     }
 
+    private fun hideKeyboard() {
+        val inputMethodManager = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+    }
+
     protected fun setTryAgainOnClickListener(onTryAgain: () -> Unit) {
         btn_try_again.apply {
             show()
@@ -31,6 +39,7 @@ abstract class BaseLceActivity(
     }
 
     protected fun showLoading() {
+        hideKeyboard()
         layout_loading.show()
         layout_content.hide()
         layout_error.hide()

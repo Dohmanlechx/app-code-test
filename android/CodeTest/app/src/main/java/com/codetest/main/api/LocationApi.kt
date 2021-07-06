@@ -3,7 +3,6 @@ package com.codetest.main.api
 import com.codetest.main.api.models.GetLocationsResponse
 import com.codetest.main.api.models.Location
 import com.codetest.main.api.models.LocationRequest
-import io.reactivex.Completable
 import io.reactivex.Single
 import okhttp3.ResponseBody
 import retrofit2.http.*

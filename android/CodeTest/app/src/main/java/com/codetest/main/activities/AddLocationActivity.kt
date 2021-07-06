@@ -6,12 +6,15 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
+import androidx.lifecycle.Lifecycle
 import com.codetest.R
 import com.codetest.main.api.models.LocationRequest
+import com.codetest.main.extensions.showToast
 import com.codetest.main.models.LocationModel
 import com.codetest.main.models.WeatherStatus
 import com.codetest.main.repositories.LocationRepository
+import com.uber.autodispose.android.lifecycle.scope
+import com.uber.autodispose.autoDisposable
 import kotlinx.android.synthetic.main.activity_add_location.*
 
 class AddLocationActivity : BaseLceActivity(contentView = R.layout.activity_add_location) {
@@ -21,7 +24,7 @@ class AddLocationActivity : BaseLceActivity(contentView = R.layout.activity_add_
     }
 
     private val locationRepo = LocationRepository()
-    private var selectedWeatherStatus = WeatherStatus.NOT_SET
+    private lateinit var selectedWeatherStatus: WeatherStatus
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +43,9 @@ class AddLocationActivity : BaseLceActivity(contentView = R.layout.activity_add_
                     selectedWeatherStatus = WeatherStatus.values()[position]
                 }
 
-                override fun onNothingSelected(parent: AdapterView<*>) {}
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    selectedWeatherStatus = WeatherStatus.NOT_SET
+                }
             }
         }
     }
@@ -58,6 +63,7 @@ class AddLocationActivity : BaseLceActivity(contentView = R.layout.activity_add_
             locationRepo
                 .postLocation(location)
                 .doOnSubscribe { showLoading() }
+                .autoDisposable(scope(Lifecycle.Event.ON_DESTROY))
                 .subscribe(
                     { newLocation ->
                         startExitAnimation(newLocation)
@@ -72,7 +78,7 @@ class AddLocationActivity : BaseLceActivity(contentView = R.layout.activity_add_
 
     private fun startExitAnimation(location: LocationModel) {
         // TODO: Add animation
-        Toast.makeText(this, "${location.name} added!", Toast.LENGTH_LONG).show()
+        this.showToast("${location.name} added!")
         finish()
     }
 }
