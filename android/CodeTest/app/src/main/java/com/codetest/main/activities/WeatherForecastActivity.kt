@@ -48,7 +48,7 @@ class WeatherForecastActivity : AppCompatActivity() {
 
     private fun setupAddLocationButton() {
         btn_add_location.setOnClickListener {
-
+            startActivity(AddLocationActivity.intent(this))
         }
     }
 
