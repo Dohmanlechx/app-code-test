@@ -7,17 +7,16 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.codetest.R
-import com.codetest.main.api.LocationApiService
-import com.codetest.main.model.Location
+import com.codetest.main.model.LocationModel
 import com.codetest.main.ui.LocationViewHolder
+import com.codetest.main.usecases.GetLocationsUseCase
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.ArrayList
 
 
 class WeatherForecastActivity : AppCompatActivity() {
 
     private var adapter = ListAdapter()
-    private var locations: List<Location> = arrayListOf()
+    private var locations: List<LocationModel> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,14 +34,15 @@ class WeatherForecastActivity : AppCompatActivity() {
     }
 
     private fun fetchLocations() {
-        getLocations { response ->
-            if (response == null) {
-                showError()
-            } else {
-                locations = response
+        GetLocationsUseCase()
+            .single()
+            .subscribe({
+                locations = it
                 adapter.notifyDataSetChanged()
-            }
-        }
+            }, {
+                it
+                showError()
+            })
     }
 
     private fun showError() {
@@ -67,19 +67,4 @@ class WeatherForecastActivity : AppCompatActivity() {
             (viewHolder as? LocationViewHolder)?.setup(locations[position])
         }
     }
-}
-
-// TODO: Remove
-fun getLocations(callback: (List<Location>?) -> Unit) {
-    val locations: ArrayList<Location> = arrayListOf()
-    val apiKey = KeyUtil().getKey()
-    LocationApiService.getApi().get(apiKey, "locations", {
-        val list = it.get("locations").asJsonArray
-        for (json in list) {
-            locations.add(Location.from(json.asJsonObject))
-        }
-        callback(locations)
-    }, {
-        callback(null)
-    })
 }

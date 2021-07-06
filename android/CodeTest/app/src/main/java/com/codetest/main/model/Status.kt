@@ -18,3 +18,6 @@ enum class Status(val value: Int) {
         fun from(string: String): Status = values().first { it.name == string }
     }
 }
+
+fun String?.toStatus(): Status =
+    Status.values().firstOrNull { it.name == this } ?: Status.UNKNOWN

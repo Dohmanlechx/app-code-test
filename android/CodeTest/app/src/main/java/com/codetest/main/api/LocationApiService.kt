@@ -1,6 +1,9 @@
 package com.codetest.main.api
 
+import com.codetest.main.model.GetLocationsResponse
+import com.codetest.main.model.Location
 import com.google.gson.JsonObject
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
@@ -27,6 +30,10 @@ class LocationApiService {
             .build()
 
         api = retrofit.create(LocationApi::class.java)
+    }
+
+    fun getLocations(apiKey: String): Single<GetLocationsResponse> {
+        return api.getLocations(apiKey)
     }
 
     fun get(apiKey: String, url: String, success: (JsonObject) -> Unit, error: (String?) -> Unit) {
