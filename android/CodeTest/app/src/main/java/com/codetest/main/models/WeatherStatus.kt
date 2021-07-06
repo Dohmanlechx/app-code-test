@@ -22,7 +22,6 @@ enum class WeatherStatus(val value: Int) {
                 .map { it.name }
                 .map { it.replace("_", " ") }
                 .map { it[0].toUpperCase() + it.substring(1).toLowerCase(Locale.ROOT) }
-
     }
 }
 

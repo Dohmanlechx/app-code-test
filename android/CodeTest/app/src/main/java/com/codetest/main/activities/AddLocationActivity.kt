@@ -49,6 +49,7 @@ class AddLocationActivity : AppCompatActivity() {
 
     private fun setupSubmitButton() {
         btn_confirm_location.setOnClickListener {
+            // TODO: Add validations
             val location =
                 LocationRequest(
                     name = et_name.text.toString(),
