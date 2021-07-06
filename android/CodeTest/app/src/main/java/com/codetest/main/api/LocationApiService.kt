@@ -5,6 +5,7 @@ import com.codetest.main.api.models.Location
 import com.codetest.main.api.models.LocationRequest
 import io.reactivex.Single
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -36,5 +37,9 @@ class LocationApiService {
 
     fun postLocation(apiKey: String, location: LocationRequest): Single<Location> {
         return api.postLocation(apiKey, location)
+    }
+
+    fun deleteLocation(apiKey: String, id: String): Single<ResponseBody> {
+        return api.deleteLocation(apiKey, id)
     }
 }

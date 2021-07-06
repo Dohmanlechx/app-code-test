@@ -2,6 +2,7 @@ package com.codetest.main.activities
 
 import android.os.Bundle
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.codetest.R
@@ -26,18 +27,7 @@ class WeatherForecastActivity : BaseActivity(contentView = R.layout.activity_mai
 
     override fun onResume() {
         super.onResume()
-
-        locationRepo
-            .fetchLocations()
-            .doOnSubscribe { showLoading() }
-            .subscribe(
-                {
-                    locations = it
-                    adapter.notifyDataSetChanged()
-                    showContent()
-                },
-                ::showError
-            )
+        fetchLocations()
     }
 
     private fun setupAdapter() {
@@ -53,11 +43,41 @@ class WeatherForecastActivity : BaseActivity(contentView = R.layout.activity_mai
         }
     }
 
+    private fun fetchLocations() {
+        locationRepo
+            .getLocations()
+            .doOnSubscribe { showLoading() }
+            .subscribe(
+                {
+                    locations = it
+                    adapter.notifyDataSetChanged()
+                    showContent()
+                },
+                ::showError
+            )
+    }
+
+    private fun deleteLocationAndUpdate(id: String) {
+        locationRepo
+            .deleteLocation(id)
+            .doOnSubscribe { showLoading() }
+            .subscribe(
+                {
+                    Toast.makeText(this, "Location #$id deleted!", Toast.LENGTH_LONG).show()
+                    fetchLocations()
+                },
+                ::showError
+            )
+    }
+
     private inner class LocationAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         override fun getItemCount() = locations.size
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = LocationViewHolder.create(parent)
         override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
-            (viewHolder as? LocationViewHolder)?.setup(locations[position])
+            (viewHolder as? LocationViewHolder)?.setup(
+                location = locations[position],
+                onLongPress = { id -> deleteLocationAndUpdate(id) }
+            )
         }
     }
 }

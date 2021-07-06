@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.codetest.R
 import com.codetest.main.models.LocationModel
 import com.codetest.main.models.WeatherStatus
+import com.codetest.main.usecases.DeleteLocationUseCase
 import kotlinx.android.synthetic.main.location.view.*
 
 
@@ -20,11 +21,15 @@ class LocationViewHolder private constructor(itemView: View) : RecyclerView.View
         }
     }
 
-    fun setup(location: LocationModel) {
+    fun setup(location: LocationModel, onLongPress: (String) -> Unit) {
         itemView.card.setCardBackgroundColor(getColor(location.status))
         itemView.name.text = location.name
         val weather = location.temperature + "°C " + String(Character.toChars(location.status.value))
         itemView.weatherInfo.text = weather
+        itemView.card.setOnLongClickListener {
+            onLongPress(location.id)
+            true
+        }
     }
 
     private fun getColor(status: WeatherStatus): Int {
