@@ -17,12 +17,7 @@ class Prefs(private val context: Context) {
 
     fun apiKey(): String {
         val keyFromPrefs = preferences().getString(KEY, null)
-
-        keyFromPrefs?.let {
-            return it
-        } ?: kotlin.run {
-            return createNewApiKeyAndStore(preferences())
-        }
+        return keyFromPrefs ?: createNewApiKeyAndStore(preferences())
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
