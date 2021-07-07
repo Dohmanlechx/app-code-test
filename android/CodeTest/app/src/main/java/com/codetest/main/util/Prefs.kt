@@ -16,7 +16,9 @@ class Prefs(private val context: Context) {
         PreferenceManager.getDefaultSharedPreferences(context)
 
     fun apiKey(): String {
-        preferences().getString(KEY, null)?.let {
+        val keyFromPrefs = preferences().getString(KEY, null)
+
+        keyFromPrefs?.let {
             return it
         } ?: kotlin.run {
             return createNewApiKeyAndStore(preferences())
