@@ -1,4 +1,4 @@
-package com.codetest.main.activities
+package com.codetest.main.ui.activities
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -9,8 +9,8 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import com.codetest.CodeTestApplication.Companion.context
 import com.codetest.R
-import com.codetest.main.extensions.hide
-import com.codetest.main.extensions.show
+import com.codetest.main.util.extensions.hide
+import com.codetest.main.util.extensions.show
 import kotlinx.android.synthetic.main.activity_base.*
 
 abstract class BaseLceActivity(

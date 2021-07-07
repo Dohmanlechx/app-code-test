@@ -1,8 +1,6 @@
-package com.codetest.main.extensions
+package com.codetest.main.util.extensions
 
-import android.content.Context
 import android.view.View
-import android.widget.Toast
 
 fun View.show() {
     visibility = View.VISIBLE

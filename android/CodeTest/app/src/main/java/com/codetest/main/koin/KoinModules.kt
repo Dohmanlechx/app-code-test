@@ -1,7 +1,7 @@
 package com.codetest.main.koin
 
 import com.codetest.main.repositories.LocationRepository
-import com.codetest.main.util.KeyUtil
+import com.codetest.main.util.Prefs
 import com.codetest.main.viewmodels.LocationViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.viewmodel.dsl.viewModel
@@ -15,7 +15,7 @@ fun appModules() = listOf(
 )
 
 private val mainModule = module {
-    single { KeyUtil(context = androidApplication()) }
+    single { Prefs(context = androidApplication()) }
 }
 
 private val viewModelsModule = module {
@@ -23,5 +23,5 @@ private val viewModelsModule = module {
 }
 
 private val reposModule = module {
-    single { LocationRepository(keyUtil = get()) }
+    single { LocationRepository(prefs = get()) }
 }

@@ -1,6 +1,5 @@
 package com.codetest.main.usecases
 
-import com.codetest.main.util.KeyUtil
 import com.codetest.main.api.LocationApi
 import io.reactivex.Single
 import okhttp3.ResponseBody

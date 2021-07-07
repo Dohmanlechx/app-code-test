@@ -1,4 +1,4 @@
-package com.codetest.main.activities
+package com.codetest.main.ui.activities
 
 import android.content.Context
 import android.content.Intent
@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter
 import androidx.lifecycle.Lifecycle
 import com.codetest.R
 import com.codetest.main.api.models.LocationRequest
-import com.codetest.main.extensions.showToast
+import com.codetest.main.util.extensions.showToast
 import com.codetest.main.models.LocationModel
 import com.codetest.main.models.WeatherStatus
 import com.codetest.main.util.EditTextListener

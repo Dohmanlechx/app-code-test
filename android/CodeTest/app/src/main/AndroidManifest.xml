@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".main.activities.WeatherForecastActivity"
+            android:name="com.codetest.main.ui.activities.WeatherForecastActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +24,7 @@
         </activity>
 
         <activity
-            android:name=".main.activities.AddLocationActivity"
+            android:name="com.codetest.main.ui.activities.AddLocationActivity"
             android:label="Add Location" />
 
     </application>

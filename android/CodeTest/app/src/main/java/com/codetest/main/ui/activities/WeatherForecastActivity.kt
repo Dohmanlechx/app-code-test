@@ -1,4 +1,4 @@
-package com.codetest.main.activities
+package com.codetest.main.ui.activities
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.RecyclerView
 import com.codetest.R
-import com.codetest.main.extensions.showToast
+import com.codetest.main.util.extensions.showToast
 import com.codetest.main.models.LocationModel
 import com.codetest.main.ui.LocationViewHolder
 import com.codetest.main.viewmodels.LocationViewModel

@@ -1,4 +1,4 @@
-package com.codetest.main.extensions
+package com.codetest.main.util.extensions
 
 import android.content.Context
 import android.widget.Toast
