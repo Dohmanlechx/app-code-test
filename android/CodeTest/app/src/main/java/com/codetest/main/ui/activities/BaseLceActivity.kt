@@ -7,10 +7,16 @@ import android.view.LayoutInflater
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import com.codetest.CodeTestApplication.Companion.context
 import com.codetest.R
 import com.codetest.main.util.hide
 import com.codetest.main.util.show
+import com.uber.autodispose.SingleSubscribeProxy
+import com.uber.autodispose.android.lifecycle.scope
+import com.uber.autodispose.autoDisposable
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_base.*
 
 abstract class BaseLceActivity(
@@ -38,13 +44,6 @@ abstract class BaseLceActivity(
         }
     }
 
-    protected fun showLoading() {
-        hideKeyboard()
-        layout_loading.show()
-        layout_content.hide()
-        layout_error.hide()
-    }
-
     protected fun showContent() {
         layout_loading.hide()
         layout_content.show()
@@ -65,4 +64,15 @@ abstract class BaseLceActivity(
             .create()
             .show()
     }
+
+    protected fun <T> Single<T>.showLoading(): SingleSubscribeProxy<T> =
+        this
+            .doOnSubscribe {
+                hideKeyboard()
+                layout_loading.show()
+                layout_content.hide()
+                layout_error.hide()
+            }
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .autoDisposable(scope(Lifecycle.Event.ON_DESTROY))
 }

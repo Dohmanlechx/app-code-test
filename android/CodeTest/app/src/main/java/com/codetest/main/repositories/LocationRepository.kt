@@ -12,6 +12,7 @@ import okhttp3.ResponseBody
 class LocationRepository(
     private val prefs: Prefs
 ) {
+    // TODO test, weatherstatus, also maybe ui
     private var cachedLocations: List<LocationModel> = emptyList()
 
     fun getLocations(): Single<List<LocationModel>> =

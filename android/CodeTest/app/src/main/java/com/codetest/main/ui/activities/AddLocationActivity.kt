@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.lifecycle.Lifecycle
 import com.codetest.R
 import com.codetest.main.api.models.LocationRequest
 import com.codetest.main.models.LocationModel
@@ -14,9 +13,6 @@ import com.codetest.main.models.WeatherStatus
 import com.codetest.main.util.EditTextListener
 import com.codetest.main.util.showToast
 import com.codetest.main.viewmodels.LocationViewModel
-import com.uber.autodispose.android.lifecycle.scope
-import com.uber.autodispose.autoDisposable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_add_location.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -84,9 +80,7 @@ class AddLocationActivity : BaseLceActivity(contentView = R.layout.activity_add_
                         status = viewModel.selectedWeatherStatus.name
                     )
                 )
-                .doOnSubscribe { showLoading() }
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .autoDisposable(scope(Lifecycle.Event.ON_DESTROY))
+                .showLoading()
                 .subscribe(
                     { newLocation ->
                         exitActivity(newLocation)
