@@ -13,6 +13,9 @@ class LocationViewModel(
 ) : ViewModel() {
     var selectedWeatherStatus: WeatherStatus = WeatherStatus.NOT_SET
 
+    fun cachedLocations(): List<LocationModel> =
+        locationRepo.cachedLocations
+
     fun getLocations(): Single<List<LocationModel>> =
         locationRepo.getLocations()
 

@@ -14,10 +14,11 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class WeatherForecastActivity : BaseLceActivity(contentView = R.layout.activity_main) {
-    private var adapter = LocationAdapter()
-    private var locations: List<LocationModel> = arrayListOf()
-
     private val viewModel: LocationViewModel by viewModel()
+    private val locations: List<LocationModel>
+        get() = viewModel.cachedLocations()
+
+    private var adapter = LocationAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,13 +55,12 @@ class WeatherForecastActivity : BaseLceActivity(contentView = R.layout.activity_
             .getLocations()
             .showLoading()
             .subscribe(
-                ::populateViews,
+                { populateViews() },
                 ::showErrorButtonAndDialog
             )
     }
 
-    private fun populateViews(newLocations: List<LocationModel>) {
-        locations = newLocations
+    private fun populateViews() {
         adapter.notifyDataSetChanged()
         showContent()
     }

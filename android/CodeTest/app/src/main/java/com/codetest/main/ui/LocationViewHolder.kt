@@ -26,9 +26,8 @@ class LocationViewHolder private constructor(itemView: View) : RecyclerView.View
             name.text = location.name
             weatherInfo.text = location.weatherInfo()
             card.setCardBackgroundColor(getColor(location.status))
-            card.setOnLongClickListener {
+            card.setOnClickListener {
                 onLongPress(location)
-                true
             }
         }
     }

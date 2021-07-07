@@ -3,14 +3,13 @@ package com.codetest.main.ui.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.codetest.R
 import com.codetest.main.api.models.LocationRequest
 import com.codetest.main.models.LocationModel
 import com.codetest.main.models.WeatherStatus
-import com.codetest.main.util.EditTextListener
+import com.codetest.main.util.listeners.EditTextListener
+import com.codetest.main.util.listeners.WeatherSpinnerListener
 import com.codetest.main.util.showToast
 import com.codetest.main.viewmodels.LocationViewModel
 import kotlinx.android.synthetic.main.activity_add_location.*
@@ -50,17 +49,16 @@ class AddLocationActivity : BaseLceActivity(contentView = R.layout.activity_add_
 
         spinner_weather_status.apply {
             adapter = statusArray
-            onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                    viewModel.selectedWeatherStatus = WeatherStatus.values()[position]
-                    validateInputs()
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>) {
-                    viewModel.selectedWeatherStatus = WeatherStatus.NOT_SET
-                }
-            }
+            onItemSelectedListener = object : WeatherSpinnerListener(
+                onSelected = ::setSelectedWeather,
+                onNothingSelected = ::setSelectedWeather
+            ) {}
         }
+    }
+
+    private fun setSelectedWeather(weatherStatus: WeatherStatus) {
+        viewModel.selectedWeatherStatus = weatherStatus
+        validateInputs()
     }
 
     private fun validateInputs() {
