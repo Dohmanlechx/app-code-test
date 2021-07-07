@@ -12,8 +12,18 @@ import okhttp3.ResponseBody
 class LocationRepository(
     private val prefs: Prefs
 ) {
+    private var cachedLocations: List<LocationModel> = emptyList()
+
     fun getLocations(): Single<List<LocationModel>> =
-        GetLocationsUseCase(prefs.getKey()).single()
+        GetLocationsUseCase(prefs.getKey())
+            .single()
+            .doOnSuccess { cachedLocations = it }
+            //.onErrorReturn { cachedLocations }
+
+            // ^ This is what I should have used in a real life app, returning latest successfully fetched data if error.
+            // But for this specific task where the server is deliberately flaky, we want to know when an error occurs.
+            //
+            // Feel free to uncomment this and compare the UX. However, this is problematic when the DELETE request fails.
 
     fun postLocation(location: LocationRequest): Single<LocationModel> =
         PostLocationUseCase(prefs.getKey(), location).single()
