@@ -12,13 +12,8 @@ class LocationRepository {
     fun getLocations(): Single<List<LocationModel>> =
         GetLocationsUseCase().single()
 
-    fun postLocation(location: LocationRequest): Single<LocationModel> {
-        if (location.temperature.toInt() < -273) {
-            return Single.error(Exception("It can't be this cold :-)"))
-        }
-
-        return PostLocationUseCase(location).single()
-    }
+    fun postLocation(location: LocationRequest): Single<LocationModel> =
+        PostLocationUseCase(location).single()
 
     fun deleteLocation(id: String): Single<ResponseBody> =
         DeleteLocationUseCase(id).single()
