@@ -1,5 +1,6 @@
 package com.codetest.main.repositories
 
+import androidx.annotation.VisibleForTesting
 import com.codetest.main.api.models.LocationRequest
 import com.codetest.main.models.LocationModel
 import com.codetest.main.usecases.DeleteLocationUseCase
@@ -12,13 +13,14 @@ import okhttp3.ResponseBody
 class LocationRepository(
     private val prefs: Prefs
 ) {
-    // TODO test, weatherstatus, also maybe ui
-    private var cachedLocations: List<LocationModel> = emptyList()
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    var cachedLocations: List<LocationModel> = emptyList()
 
-    fun getLocations(): Single<List<LocationModel>> =
-        GetLocationsUseCase(prefs.apiKey())
-            .single()
-            .doOnSuccess { cachedLocations = it }
+    fun getLocations(
+        singleFromTesting: Single<List<LocationModel>>? = null
+    ): Single<List<LocationModel>> =
+        (singleFromTesting ?: GetLocationsUseCase(prefs.apiKey()).single())
+            .doOnSuccess(::cacheLocations)
             //.onErrorReturn { cachedLocations }
 
             // ^ This is what I should have used in a real life app, returning latest successfully fetched data if error.
@@ -31,4 +33,9 @@ class LocationRepository(
 
     fun deleteLocation(id: String): Single<ResponseBody> =
         DeleteLocationUseCase(prefs.apiKey(), id).single()
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    fun cacheLocations(locations: List<LocationModel>) {
+        cachedLocations = locations
+    }
 }
