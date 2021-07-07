@@ -1,9 +1,15 @@
 package com.codebase.main.repositories
 
+import android.content.Context
+import com.codetest.main.api.models.Location
+import com.codetest.main.api.models.LocationRequest
 import com.codetest.main.models.LocationModel
 import com.codetest.main.models.WeatherStatus
 import com.codetest.main.repositories.LocationRepository
+import com.codetest.main.usecases.PostLocationUseCase
 import com.codetest.main.util.Prefs
+import com.codetest.main.util.toModel
+import com.codetest.main.util.toStatus
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockito_kotlin.*
 import io.reactivex.Single
@@ -52,5 +58,34 @@ class LocationRepositoryTest {
 
         verify(spyLocationRepo, never()).cacheLocations(any())
         assertThat(spyLocationRepo.cachedLocations.size).isEqualTo(0)
+    }
+
+    @Test
+    fun `Post location should return LocationModel with corresponding values`() {
+        val postLocationRequest =
+            LocationRequest(
+                name = "Tokyo",
+                temperature = 41,
+                status = "SUNNY"
+            )
+
+        MockPostLocationUseCase(postLocationRequest)
+            .createSingle()
+            .test()
+            .assertValue {
+                postLocationRequest.name == it.name
+                        && postLocationRequest.temperature == it.temperature
+                        && it.status == WeatherStatus.SUNNY
+            }
+    }
+}
+
+private class MockPostLocationUseCase(
+    private val locationRequest: LocationRequest
+) : PostLocationUseCase(apiKey = "", location = locationRequest) {
+    override fun createSingle(): Single<LocationModel> {
+        val response =
+            locationRequest.let { Location("id", it.name, it.temperature, it.status.toStatus()) }
+        return Single.just(response).map { it.toModel() }
     }
 }

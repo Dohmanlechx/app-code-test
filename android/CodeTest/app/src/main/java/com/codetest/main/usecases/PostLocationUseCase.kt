@@ -7,7 +7,7 @@ import com.codetest.main.util.toModel
 import io.reactivex.Single
 import org.koin.core.component.inject
 
-class PostLocationUseCase(
+open class PostLocationUseCase(
     private val apiKey: String,
     private val location: LocationRequest
 ) : SingleUseCase<LocationModel>() {
