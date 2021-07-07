@@ -16,7 +16,7 @@ class ExtensionsTest {
             Location(
                 id = "123",
                 name = null,
-                temperature = "10",
+                temperature = 10,
                 status = null
             )
 
@@ -24,7 +24,7 @@ class ExtensionsTest {
 
         assertThat(uiModel.id).isEqualTo("123")
         assertThat(uiModel.name).isEqualTo("")
-        assertThat(uiModel.temperature).isEqualTo("10")
+        assertThat(uiModel.temperature).isEqualTo(10)
         assertThat(uiModel.status).isEqualTo(WeatherStatus.NOT_SET)
     }
 
@@ -55,7 +55,7 @@ class ExtensionsTest {
             LocationModel(
                 id = "123",
                 name = "Stockholm",
-                temperature = "24",
+                temperature = 24,
                 status = WeatherStatus.LIGHTENING
             )
 

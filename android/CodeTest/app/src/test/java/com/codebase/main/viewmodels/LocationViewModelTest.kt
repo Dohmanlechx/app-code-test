@@ -14,7 +14,7 @@ class LocationViewModelTest {
             .postLocation(
                 LocationRequest(
                     name = "Very cold place",
-                    temperature = "-300",
+                    temperature = -300,
                     status = "SNOW_CLOUD"
                 )
             )

@@ -76,7 +76,7 @@ class AddLocationActivity : BaseLceActivity(contentView = R.layout.activity_add_
                 .postLocation(
                     LocationRequest(
                         name = et_name.text.toString(),
-                        temperature = et_temperature.text.toString(),
+                        temperature = et_temperature.text.toString().toInt(),
                         status = viewModel.selectedWeatherStatus.name
                     )
                 )
