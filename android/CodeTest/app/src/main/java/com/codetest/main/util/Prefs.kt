@@ -2,22 +2,31 @@ package com.codetest.main.util
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.annotation.VisibleForTesting
 import androidx.preference.PreferenceManager
 import java.util.*
 
 class Prefs(private val context: Context) {
-    private val key = "api_key"
+    companion object {
+        const val KEY = "api_key"
+    }
 
-    private fun preferences(): SharedPreferences =
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    fun preferences(): SharedPreferences =
         PreferenceManager.getDefaultSharedPreferences(context)
 
-    fun getKey(): String {
-        preferences().getString(key, null)?.let {
+    fun apiKey(): String {
+        preferences().getString(KEY, null)?.let {
             return it
         } ?: kotlin.run {
-            val apiKey = UUID.randomUUID().toString()
-            preferences().edit().putString(key, apiKey).apply()
-            return apiKey
+            return createNewApiKeyAndStore(preferences())
         }
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    fun createNewApiKeyAndStore(prefs: SharedPreferences): String {
+        val apiKey = UUID.randomUUID().toString()
+        prefs.edit().putString(KEY, apiKey).apply()
+        return apiKey
     }
 }

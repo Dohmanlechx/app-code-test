@@ -15,7 +15,7 @@ class LocationRepository(
     private var cachedLocations: List<LocationModel> = emptyList()
 
     fun getLocations(): Single<List<LocationModel>> =
-        GetLocationsUseCase(prefs.getKey())
+        GetLocationsUseCase(prefs.apiKey())
             .single()
             .doOnSuccess { cachedLocations = it }
             //.onErrorReturn { cachedLocations }
@@ -26,8 +26,8 @@ class LocationRepository(
             // Feel free to uncomment this and compare the UX. However, this is problematic when the DELETE request fails.
 
     fun postLocation(location: LocationRequest): Single<LocationModel> =
-        PostLocationUseCase(prefs.getKey(), location).single()
+        PostLocationUseCase(prefs.apiKey(), location).single()
 
     fun deleteLocation(id: String): Single<ResponseBody> =
-        DeleteLocationUseCase(prefs.getKey(), id).single()
+        DeleteLocationUseCase(prefs.apiKey(), id).single()
 }
