@@ -9,8 +9,8 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import com.codetest.CodeTestApplication.Companion.context
 import com.codetest.R
-import com.codetest.main.util.extensions.hide
-import com.codetest.main.util.extensions.show
+import com.codetest.main.util.hide
+import com.codetest.main.util.show
 import kotlinx.android.synthetic.main.activity_base.*
 
 abstract class BaseLceActivity(

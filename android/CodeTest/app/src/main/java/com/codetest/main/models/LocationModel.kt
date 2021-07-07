@@ -6,6 +6,3 @@ data class LocationModel(
     val temperature: String,
     val status: WeatherStatus
 )
-
-fun LocationModel.weatherInfo(): String =
-    temperature + "°C " + String(Character.toChars(status.value))

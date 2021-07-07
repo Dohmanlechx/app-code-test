@@ -9,10 +9,10 @@ import android.widget.ArrayAdapter
 import androidx.lifecycle.Lifecycle
 import com.codetest.R
 import com.codetest.main.api.models.LocationRequest
-import com.codetest.main.util.extensions.showToast
 import com.codetest.main.models.LocationModel
 import com.codetest.main.models.WeatherStatus
 import com.codetest.main.util.EditTextListener
+import com.codetest.main.util.showToast
 import com.codetest.main.viewmodels.LocationViewModel
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDisposable

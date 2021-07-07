@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.codetest.R
 import com.codetest.main.models.LocationModel
 import com.codetest.main.ui.LocationViewHolder
-import com.codetest.main.util.extensions.showToast
+import com.codetest.main.util.showToast
 import com.codetest.main.viewmodels.LocationViewModel
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDisposable

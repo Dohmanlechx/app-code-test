@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.codetest.R
 import com.codetest.main.models.LocationModel
 import com.codetest.main.models.WeatherStatus
-import com.codetest.main.models.weatherInfo
+import com.codetest.main.util.weatherInfo
 import kotlinx.android.synthetic.main.location.view.*
 
 

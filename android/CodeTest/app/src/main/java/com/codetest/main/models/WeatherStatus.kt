@@ -21,9 +21,6 @@ enum class WeatherStatus(val value: Int) {
             get() = values()
                 .map { it.name }
                 .map { it.replace("_", " ") }
-                .map { it[0].toUpperCase() + it.substring(1).toLowerCase(Locale.ROOT) }
+                .map { it[0].uppercaseChar() + it.substring(1).lowercase(Locale.ROOT) }
     }
 }
-
-fun String?.toStatus(): WeatherStatus =
-    WeatherStatus.values().firstOrNull { it.name == this } ?: WeatherStatus.NOT_SET
