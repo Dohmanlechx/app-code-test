@@ -6,12 +6,13 @@ import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.RecyclerView
 import com.codetest.R
-import com.codetest.main.util.extensions.showToast
 import com.codetest.main.models.LocationModel
 import com.codetest.main.ui.LocationViewHolder
+import com.codetest.main.util.extensions.showToast
 import com.codetest.main.viewmodels.LocationViewModel
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDisposable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -56,6 +57,7 @@ class WeatherForecastActivity : BaseLceActivity(contentView = R.layout.activity_
         viewModel
             .getLocations()
             .doOnSubscribe { showLoading() }
+            .subscribeOn(AndroidSchedulers.mainThread())
             .autoDisposable(scope(Lifecycle.Event.ON_DESTROY))
             .subscribe(
                 ::populateViews,
@@ -83,6 +85,7 @@ class WeatherForecastActivity : BaseLceActivity(contentView = R.layout.activity_
                 viewModel
                     .deleteLocation(location.id)
                     .doOnSubscribe { showLoading() }
+                    .subscribeOn(AndroidSchedulers.mainThread())
                     .autoDisposable(scope(Lifecycle.Event.ON_DESTROY))
                     .subscribe(
                         {

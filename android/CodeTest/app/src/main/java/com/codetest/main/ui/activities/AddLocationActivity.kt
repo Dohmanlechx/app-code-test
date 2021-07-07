@@ -16,6 +16,7 @@ import com.codetest.main.util.EditTextListener
 import com.codetest.main.viewmodels.LocationViewModel
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDisposable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_add_location.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -49,7 +50,7 @@ class AddLocationActivity : BaseLceActivity(contentView = R.layout.activity_add_
 
     private fun setupStatusSpinner() {
         val statusArray =
-            ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, WeatherStatus.formattedNames)
+            ArrayAdapter(this, android.R.layout.simple_spinner_item, WeatherStatus.formattedNames)
 
         spinner_weather_status.apply {
             adapter = statusArray
@@ -84,6 +85,7 @@ class AddLocationActivity : BaseLceActivity(contentView = R.layout.activity_add_
                     )
                 )
                 .doOnSubscribe { showLoading() }
+                .subscribeOn(AndroidSchedulers.mainThread())
                 .autoDisposable(scope(Lifecycle.Event.ON_DESTROY))
                 .subscribe(
                     { newLocation ->
