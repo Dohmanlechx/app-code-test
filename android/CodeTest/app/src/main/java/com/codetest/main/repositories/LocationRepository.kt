@@ -21,12 +21,12 @@ class LocationRepository(
     ): Single<List<LocationModel>> =
         (singleFromTesting ?: GetLocationsUseCase(prefs.apiKey()).single())
             .doOnSuccess(::cacheLocations)
-    //.onErrorReturn { cachedLocations }
+            //.onErrorReturn { cachedLocations }
 
-    // ^ This is what I should have used in a real life app, returning latest successfully fetched data if error.
-    // But for this specific task where the server is deliberately flaky, we want to know when an error occurs.
-    //
-    // Feel free to uncomment this and compare the UX. However, this is problematic when the DELETE request fails.
+            // ^ This is what I should have used in a real life app, returning latest successfully fetched data if error.
+            // But for this specific task where the server is deliberately flaky, we want to know when an error occurs.
+            //
+            // Feel free to uncomment this and compare the UX. However, this is problematic when the DELETE request fails.
 
     fun postLocation(location: LocationRequest): Single<LocationModel> =
         PostLocationUseCase(prefs.apiKey(), location).single()
