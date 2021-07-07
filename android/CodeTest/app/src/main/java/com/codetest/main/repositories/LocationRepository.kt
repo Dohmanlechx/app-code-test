@@ -5,16 +5,19 @@ import com.codetest.main.models.LocationModel
 import com.codetest.main.usecases.DeleteLocationUseCase
 import com.codetest.main.usecases.GetLocationsUseCase
 import com.codetest.main.usecases.PostLocationUseCase
+import com.codetest.main.util.KeyUtil
 import io.reactivex.Single
 import okhttp3.ResponseBody
 
-class LocationRepository {
+class LocationRepository(
+    private val keyUtil: KeyUtil
+) {
     fun getLocations(): Single<List<LocationModel>> =
-        GetLocationsUseCase().single()
+        GetLocationsUseCase(keyUtil.getKey()).single()
 
     fun postLocation(location: LocationRequest): Single<LocationModel> =
-        PostLocationUseCase(location).single()
+        PostLocationUseCase(keyUtil.getKey(), location).single()
 
     fun deleteLocation(id: String): Single<ResponseBody> =
-        DeleteLocationUseCase(id).single()
+        DeleteLocationUseCase(keyUtil.getKey(), id).single()
 }
