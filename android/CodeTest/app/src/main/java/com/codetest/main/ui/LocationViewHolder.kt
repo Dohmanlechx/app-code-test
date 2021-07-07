@@ -1,13 +1,12 @@
 package com.codetest.main.ui
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.codetest.R
 import com.codetest.main.models.LocationModel
 import com.codetest.main.models.WeatherStatus
-import com.codetest.main.usecases.DeleteLocationUseCase
 import kotlinx.android.synthetic.main.location.view.*
 
 

@@ -12,12 +12,12 @@ import com.codetest.main.api.models.LocationRequest
 import com.codetest.main.extensions.showToast
 import com.codetest.main.models.LocationModel
 import com.codetest.main.models.WeatherStatus
-import com.codetest.main.repositories.LocationRepository
 import com.codetest.main.util.EditTextListener
 import com.codetest.main.viewmodels.LocationViewModel
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDisposable
 import kotlinx.android.synthetic.main.activity_add_location.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class AddLocationActivity : BaseLceActivity(contentView = R.layout.activity_add_location) {
     companion object {
@@ -25,8 +25,7 @@ class AddLocationActivity : BaseLceActivity(contentView = R.layout.activity_add_
             Intent(context, AddLocationActivity::class.java)
     }
 
-    private val viewModel = LocationViewModel(LocationRepository())
-    private lateinit var selectedWeatherStatus: WeatherStatus
+    private val viewModel: LocationViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,12 +55,12 @@ class AddLocationActivity : BaseLceActivity(contentView = R.layout.activity_add_
             adapter = statusArray
             onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                    selectedWeatherStatus = WeatherStatus.values()[position]
+                    viewModel.selectedWeatherStatus = WeatherStatus.values()[position]
                     validateInputs()
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
-                    selectedWeatherStatus = WeatherStatus.NOT_SET
+                    viewModel.selectedWeatherStatus = WeatherStatus.NOT_SET
                 }
             }
         }
@@ -71,7 +70,7 @@ class AddLocationActivity : BaseLceActivity(contentView = R.layout.activity_add_
         btn_confirm_location.isEnabled =
             et_name.text?.isNotEmpty() == true
                     && et_temperature.text?.isNotEmpty() == true
-                    && selectedWeatherStatus != WeatherStatus.NOT_SET
+                    && viewModel.selectedWeatherStatus != WeatherStatus.NOT_SET
     }
 
     private fun setupSubmitButton() {
@@ -81,7 +80,7 @@ class AddLocationActivity : BaseLceActivity(contentView = R.layout.activity_add_
                     LocationRequest(
                         name = et_name.text.toString(),
                         temperature = et_temperature.text.toString(),
-                        status = selectedWeatherStatus.name
+                        status = viewModel.selectedWeatherStatus.name
                     )
                 )
                 .doOnSubscribe { showLoading() }

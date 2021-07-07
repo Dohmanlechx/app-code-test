@@ -9,20 +9,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.codetest.R
 import com.codetest.main.extensions.showToast
 import com.codetest.main.models.LocationModel
-import com.codetest.main.repositories.LocationRepository
 import com.codetest.main.ui.LocationViewHolder
 import com.codetest.main.viewmodels.LocationViewModel
 import com.uber.autodispose.android.lifecycle.scope
 import com.uber.autodispose.autoDisposable
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class WeatherForecastActivity : BaseLceActivity(contentView = R.layout.activity_main) {
-
     private var adapter = LocationAdapter()
     private var locations: List<LocationModel> = arrayListOf()
 
-    private val viewModel = LocationViewModel(LocationRepository())
+    private val viewModel: LocationViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

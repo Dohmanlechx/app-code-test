@@ -3,6 +3,7 @@ package com.codetest.main.viewmodels
 import androidx.lifecycle.ViewModel
 import com.codetest.main.api.models.LocationRequest
 import com.codetest.main.models.LocationModel
+import com.codetest.main.models.WeatherStatus
 import com.codetest.main.repositories.LocationRepository
 import io.reactivex.Single
 import okhttp3.ResponseBody
@@ -10,6 +11,8 @@ import okhttp3.ResponseBody
 class LocationViewModel(
     private val locationRepo: LocationRepository
 ) : ViewModel() {
+    var selectedWeatherStatus: WeatherStatus = WeatherStatus.NOT_SET
+
     fun getLocations(): Single<List<LocationModel>> =
         locationRepo.getLocations()
 

@@ -1,44 +1,19 @@
-package com.codetest
+package com.codetest.main.koin
 
 import com.codetest.main.api.LocationApi
-import com.codetest.main.repositories.LocationRepository
-import com.codetest.main.viewmodels.LocationViewModel
 import okhttp3.OkHttpClient
-import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-fun appModules() = listOf(
-    mainModule,
-    apisModule,
-    viewModelsModule,
-    reposModules
-)
-
-private val mainModule = module {
-
-}
-
-private val apisModule = module {
+val apisModule = module {
     single { createOkHttp() }
     single { createCallAdapterFactory() }
     single { createGson() }
-
-    single {
-        createRetrofit(client = get(), callFactory = get(), gson = get())
-    }
+    single { createRetrofit(client = get(), callFactory = get(), gson = get()) }
 
     single { get<Retrofit>().create(LocationApi::class.java) }
-}
-
-private val viewModelsModule = module {
-    viewModel { LocationViewModel(locationRepo = get()) }
-}
-
-private val reposModules = module {
-    single { LocationRepository() }
 }
 
 private fun createOkHttp(): OkHttpClient =
