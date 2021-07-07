@@ -30,7 +30,7 @@ fun Location.toModel(): LocationModel =
     )
 
 fun String?.toStatus(): WeatherStatus =
-    WeatherStatus.values().firstOrNull { it.name == this } ?: WeatherStatus.NOT_SET
+    WeatherStatus.values().firstOrNull { it.name == this?.uppercase() } ?: WeatherStatus.NOT_SET
 
 fun LocationModel.weatherInfo(): String =
     temperature + "°C " + String(Character.toChars(status.value))
